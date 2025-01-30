@@ -147,9 +147,18 @@ export default function TaskForm({ onSubmit, onCancel }) {
             htmlFor="image"
             className="block text-sm font-medium text-gray-300 mb-1"
           >
-            Image *
+            Image (optinal)
           </label>
           <input
+            type="url"
+            id="image"
+            className="w-full rounded-lg border border-gray-600 bg-gray-700 px-4 py-2 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={formData.image}
+            onChange={(e) =>
+              setFormData({ ...formData, image: e.target.value })
+            }
+          />
+          {/* <input
             type="file"
             id="image"
             required
@@ -161,7 +170,7 @@ export default function TaskForm({ onSubmit, onCancel }) {
                 image: e.target.files?.[0]?.name || "",
               })
             }
-          />
+          /> */}
         </div>
 
         {/* Submit and Cancel Buttons */}

@@ -1,32 +1,43 @@
 "use client";
-import { useState } from "react";
-import { account, ID } from "../../lib/config/appwrite";
+import { useEffect, useState } from "react";
 import TaskForm from "@/components/tasks/TaskForm";
 import TaskList from "@/components/tasks/TaskList";
 import { ITask } from "../../lib/types/task";
+import { Appwrite } from "../../lib/config/appwrite";
+import { Models, Query } from "appwrite";
 
 export default function Home() {
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      name: "Complete project proposal",
-      status: "Pending",
-      date: "2023-06-15T10:00",
-      start_date: "2023-06-15T10:00",
-      end_date: "2023-06-20T18:00",
-      description: "Draft and finalize the project proposal for the client",
-      image: "proposal.jpg",
-    },
-    // Add more sample tasks here
-  ]);
+  const [tasks, setTasks] = useState<Models.Document[]>([]);
 
   const [showForm, setShowForm] = useState(false);
 
   const addTask = async (newTask: ITask) => {
-    const result = await account.create();
+    const result = await Appwrite.databases.createDocument(
+      Appwrite.databaseId,
+      Appwrite.collections.task.id,
+      Appwrite.ID.unique(),
+      newTask
+    );
     console.log(result);
+    refetch();
     setShowForm(false);
   };
+
+  const refetch = async () => {
+    const result: Models.DocumentList<Models.Document> =
+      await Appwrite.databases.listDocuments(
+        Appwrite.databaseId,
+        Appwrite.collections.task.id,
+        [Query.orderDesc("date")]
+      );
+    if (result?.documents?.length > 0) {
+      setTasks(result.documents);
+    }
+  };
+
+  useEffect(() => {
+    refetch();
+  }, []);
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100 p-6">
       <div className="max-w-6xl mx-auto">
