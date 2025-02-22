@@ -4,12 +4,12 @@ export const client = new Client();
 
 client
   .setEndpoint("https://cloud.appwrite.io/v1")
-  .setProject(process.env.NEXT_PUBLIC_PROJECT_ID as string); // Replace with your project ID
+  .setProject(process.env.NEXT_PUBLIC_PROJECT_ID as string);
 
 const databases = new Databases(client);
 export const account = new Account(client);
 
-const databaseId = process.env.NEXT_PUBLIC_DATABASE_ID as string; // Replace with your database ID
+const databaseId = process.env.NEXT_PUBLIC_DATABASE_ID as string;
 const taskId = process.env.NEXT_PUBLIC_TASK_COLLECTION_ID as string;
 
 export const Appwrite = {
@@ -25,5 +25,3 @@ export const Appwrite = {
     },
   },
 };
-
-// Initialize Database service
